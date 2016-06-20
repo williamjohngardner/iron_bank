@@ -15,12 +15,18 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from app.views import IndexView, CreateUserView, ProfileView
+from django.contrib.auth.views import logout
+from app.views import IndexView, CreateUserView, ProfileView, TransactionView
+from django.contrib.auth.decorators import login_required
+
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', IndexView.as_view(), name="index"),
     url(r'^', include('django.contrib.auth.urls')),
+    url(r'^logout/$', logout, name="logout"),
     url(r'^create_user/$', CreateUserView.as_view(), name="create_user"),
-    url(r'^accounts/profile/$', ProfileView.as_view(), name="profile_view")
+    url(r'^accounts/profile/$', login_required(ProfileView.as_view()), name="profile_view"),
+    url(r'^transaction/(?P<trans>\d+)/$', login_required(TransactionView.as_view()), name="transaction_view")
+
 ]
