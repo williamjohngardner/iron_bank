@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+    <h1>Overwrite this!</h1>
+    <a href="{% url 'login' %}">Login to the Iron Bank</a>
+    <br>
+    <a href="{% url 'create_user' %}">Create a New User</a>
+{% endblock %}
