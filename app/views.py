@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import TemplateView, CreateView, ListView, DetailView, FormView
+from django.views.generic import TemplateView, CreateView, ListView, DetailView
 from app.models import Transaction
 from app.forms import TransferFunds
 from django.contrib.auth.models import User
@@ -27,14 +27,16 @@ class CreateTransactionView(CreateView):
         return super().form_valid(form)
 
 
-class TransferFundsView(FormView):
-    template_name = "transfer_funds.html"
-    form_class = TransferFunds
+class TransferFundsView(CreateView):
+    model = Transaction
+    fields = ["amount", "vendor"]
     success_url = "/accounts/profile"
 
     def form_valid(self, form):
-        # transaction = form.save(commit=False)
-        # transaction.user = self.request.user
+        transaction = form.save(commit=False)
+        vendor_pk = form.cleaned_data["vendor"]
+        transaction.user = User.objects.get(id=vendor_pk)
+        Transaction.objects.create(amount=transaction.amount, vendor='', transaction_type='DB', user=self.request.user)
         return super(TransferFundsView, self).form_valid(form)
 
 
