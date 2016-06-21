@@ -4,6 +4,10 @@
 <div class="page-header">
 <h2>{{ request.user }}'s Profile Page</h2>
 </div>
+<div class="btn-group" role="group" aria-label="...">
+  <a class="btn btn-primary" href="{% url 'create_transaction_view' %}" role=button>Create New Transaction</a>
+  <button type="button" class="btn btn-primary">Transfer Funds</button>
+</div>
 <div class="container">
   <h2>Account Balance = ${{ balance }}</h2>
 </div>

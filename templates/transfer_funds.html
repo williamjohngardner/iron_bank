@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<div class="page-header">
+<h2>Create a New Transaction</h2>
+</div>
+  <form action="" method="post">
+    {% csrf_token %}
+      <pre>{{ form.as_p }}</pre>
+    <input class="btn btn-primary" type="submit" value="Transfer Funds" />
+  </form>
+{% endblock %}
