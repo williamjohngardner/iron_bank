@@ -6,7 +6,7 @@
 </div>
 <div class="btn-group" role="group" aria-label="...">
   <a class="btn btn-primary" href="{% url 'create_transaction_view' %}" role=button>Create New Transaction</a>
-  <button type="button" class="btn btn-primary">Transfer Funds</button>
+  <a class="btn btn-primary" href="{% url 'transfer_funds_view' %}" role=button>Transfer Funds</a>
 </div>
 <div class="container">
   <h2>Account Balance = ${{ balance }}</h2>

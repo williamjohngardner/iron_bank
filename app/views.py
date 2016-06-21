@@ -6,6 +6,18 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 import datetime
 
+
+def account_balance(self):
+    self.balance = 0
+    transactions = Transaction.objects.filter(user=self.request.user)
+    for transaction in transactions:
+        print(transaction.transaction_type)
+        if transaction.transaction_type == 'CR':
+            self.balance += transaction.amount
+        elif transaction.transaction_type == 'DB':
+            self.balance -= transaction.amount
+    return self.balance
+
 class IndexView(TemplateView):
     template_name = "index.html"
 
@@ -24,7 +36,11 @@ class CreateTransactionView(CreateView):
     def form_valid(self, form):
         transaction = form.save(commit=False)
         transaction.user = self.request.user
-        return super().form_valid(form)
+        balance = account_balance(self)
+        if transaction.amount > balance:
+            raise ValidationError("Don't do that!  You don't have enough money!")
+        else:
+            return super(CreateTransactionView, self).form_valid(form)
 
 
 class TransferFundsView(CreateView):
@@ -41,23 +57,15 @@ class TransferFundsView(CreateView):
 
 
 class ProfileView(ListView):
+    model = Transaction
     template_name = "accounts/profile.html"
-
-    def get_queryset(self):
-        return Transaction.objects.filter(user=self.request.user).filter(date__lte=datetime.datetime.today(), date__gt=datetime.datetime.today()-datetime.timedelta(days=30))
-
 
     def get_context_data(self):
         context = super().get_context_data()
-        balance = 0
-        transactions = Transaction.objects.filter(user=self.request.user)
-        for transaction in transactions:
-            print(transaction.transaction_type)
-            if transaction.transaction_type == 'CR':
-                balance += transaction.amount
-            elif transaction.transaction_type == 'DB':
-                balance -= transaction.amount
+        balance = account_balance(self)
+        filtered = Transaction.objects.filter(user=self.request.user).filter(date__lte=datetime.datetime.today(), date__gt=datetime.datetime.today()-datetime.timedelta(days=30))
         context['balance'] = balance
+        context['filtered'] = filtered
         return context
 
 
