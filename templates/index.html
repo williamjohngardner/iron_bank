@@ -2,8 +2,12 @@
 
 
 {% block content %}
-    <h1>Welcome to the Iron Bank of Greenville</h1>
+  <div class="container">
+    <div class="page-header">
+      <h1>Welcome to the Iron Bank of Greenville</h1>
+    </div>
     <h3><a href="{% url 'login' %}">Login to the Iron Bank</a></h3>
     <br>
     <h3><a href="{% url 'create_user' %}">Create a New User</a></h3>
+  </div>
 {% endblock %}

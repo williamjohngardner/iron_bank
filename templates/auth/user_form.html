@@ -2,10 +2,13 @@
 
 {% block content %}
     <div class="container">
+      <div class="page-header">
+      <h3>Create a new user to view your Iron Bank account</h3>
+      </div>
       <form action="" method="post">
         {% csrf_token %}
         <pre>{{ form.as_p }}</pre>
-        <input type="submit" name="login" value="Login">
+        <input class="btn btn-primary" type="submit" name="login" value="Login">
       </form>
     </div>
 {% endblock %}
