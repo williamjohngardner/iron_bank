@@ -21,7 +21,7 @@
     <th>Acct. No.</th>
 
 </tr>
-{% for object in object_list %}
+{% for object in filtered %}
 <tr>
   <td><a href="{% url 'transaction_view' object.id %}">{{ object.vendor }}</a></td>
   <td>{{ object.amount }}</td>
